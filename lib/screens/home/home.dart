@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ren/screens/home/widgets_for_bottom_navigation/chat.dart';
+import 'package:ren/screens/home/widgets_for_bottom_navigation/favourites.dart';
+import 'package:ren/screens/home/widgets_for_bottom_navigation/home.dart';
+import 'package:ren/screens/home/widgets_for_bottom_navigation/profile.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -13,21 +15,11 @@ class _HomeState extends State<Home> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-    ),
-    Text(
-      'Index 1: Chat',
-    ),
-    Text(
-      'Index 2: add',
-    ),
-    Text(
-      'Index 3: favourates',
-    ),
-    Text(
-      'Index 4: Profile',
-    ),
+    HomeWidget(),
+    Chat(),
+    Text("add"),
+    Favourites(),
+    Profile(),
   ];
 
   void _onItemTapped(int index) {
@@ -48,36 +40,33 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
         type: BottomNavigationBarType.fixed,
-        items: <BottomNavigationBarItem>[
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: _selectedIndex == 0
-                ? const Icon(Icons.home)
-                : const Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: _selectedIndex == 1
-                ? const Icon(Icons.chat_bubble)
-                : const Icon(Icons.chat_bubble_outline),
+            activeIcon: Icon(Icons.chat_bubble),
+            icon: Icon(Icons.chat_bubble_outline),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: _selectedIndex == 2
-                ? const Icon(Icons.add_circle)
-                : const Icon(Icons.add_circle_outline),
+            activeIcon: Icon(Icons.add_circle),
+            icon: Icon(Icons.add_circle_outline),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: _selectedIndex == 3
-                ? const Icon(Icons.favorite)
-                : const Icon(Icons.favorite_border),
+            activeIcon: Icon(Icons.favorite),
+            icon: Icon(Icons.favorite_border),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: _selectedIndex == 4
-                ? const Icon(Icons.person)
-                : const Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline),
             label: '',
           ),
         ],

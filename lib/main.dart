@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ren/screens/home.dart';
+import 'package:ren/screens/home/home.dart';
 
 void main() {
   runApp(const App());
@@ -54,7 +54,7 @@ class App extends StatelessWidget {
             overline: GoogleFonts.rubik(
                 fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
           )),
-      home: const Home(title: 'Flutter Demo Home Page'),
+      home: const Home(),
     );
   }
 }
