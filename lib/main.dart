@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ren/screens/home/home.dart';
+import 'package:ren/routes/routes.gr.dart';
 
 void main() {
-  runApp(const App());
+  runApp(App());
 }
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  App({Key? key}) : super(key: key);
+
+  final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
           primaryColor: const Color(0xff6319b8),
@@ -54,7 +56,8 @@ class App extends StatelessWidget {
             overline: GoogleFonts.rubik(
                 fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
           )),
-      home: const Home(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
+      routerDelegate: _appRouter.delegate(),
     );
   }
 }
