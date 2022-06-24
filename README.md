@@ -50,3 +50,7 @@ then run `flutter_native_splash:create`
 To set app name we are using **flutter_app_name**
 If you want to change app name, Then update name value under **flutter_app_name** in **pubspec.yml**
 then run `flutter pub run flutter_app_name`
+
+## Auto route
+We are using https://pub.dev/packages/auto_route package to generate routes
+after adding routets to routes.dart run `flutter packages pub run build_runner build` to auto generate code

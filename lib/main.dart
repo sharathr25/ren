@@ -1,33 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ren/auth/auth_service.dart';
+import 'package:ren/routes/route_guard.dart';
 import 'package:ren/routes/routes.gr.dart';
 
 void main() {
-  runApp(App());
+  runApp(const App());
 }
 
-class App extends StatelessWidget {
-  App({Key? key}) : super(key: key);
+class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
 
-  final _appRouter = AppRouter();
+  static AppState of(BuildContext context) =>
+      context.findAncestorStateOfType<AppState>()!;
+
+  @override
+  State<App> createState() => AppState();
+}
+
+class AppState extends State<App> {
+  static final authService = AuthService();
+  final _appRouter = AppRouter(routeGuard: RouteGuard(authService));
+  final Color primaryColor = const Color(0xff6319b8);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
-          primaryColor: const Color(0xff6319b8),
+          primaryColor: primaryColor,
           scaffoldBackgroundColor: const Color(0xfff0e6f8),
-          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
             backgroundColor: Colors.transparent,
-            selectedIconTheme:
-                IconThemeData(color: Color(0xff6319b8), size: 30),
-            unselectedIconTheme:
-                IconThemeData(color: Color(0xff6319b8), size: 30),
+            selectedIconTheme: IconThemeData(color: primaryColor, size: 30),
+            unselectedIconTheme: IconThemeData(color: primaryColor, size: 30),
             elevation: 0,
           ),
-          appBarTheme: const AppBarTheme(
-              backgroundColor: Color(0xff6319b8), elevation: 0),
+          appBarTheme: AppBarTheme(backgroundColor: primaryColor, elevation: 0),
           textTheme: TextTheme(
             headline1: GoogleFonts.rubik(
                 fontSize: 98, fontWeight: FontWeight.w300, letterSpacing: -1.5),
