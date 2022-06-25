@@ -6,8 +6,7 @@ String? Function(String?)? emailOrPhoneNumberValidator(
   return (value) {
     if (value == null || value.isEmpty) {
       return "Email or Phone number is required";
-    } else if (PHONE_NUMBER_REGEX.hasMatch(value) ||
-        EMAIL_REGEX.hasMatch(value)) {
+    } else if (phoneRegex.hasMatch(value) || emailRegex.hasMatch(value)) {
       formKey.currentState!.save();
       return null;
     } else {

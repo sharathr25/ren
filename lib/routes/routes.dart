@@ -17,7 +17,7 @@ import 'package:ren/screens/sign_up/sign_up_screen.dart';
       AutoRoute(
         page: Home,
         name: 'HomeRoute',
-        path: '',
+        path: 'home',
       ),
       AutoRoute(
         page: Chat,
@@ -48,7 +48,7 @@ import 'package:ren/screens/sign_up/sign_up_screen.dart';
     AutoRoute(
       page: SignUpScreen,
       name: 'SignUpRoute',
-      path: 'sign-up',
+      path: '/sign-up',
     )
   ],
 )

@@ -1,13 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ren/repos/auth_repository/auth_repository.dart';
 import 'package:ren/routes/routes.gr.dart';
 import 'package:ren/utils/validators.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key, required this.onLoginCallback})
-      : super(key: key);
-
-  final Function(bool loggedIn) onLoginCallback;
+  const SignInScreen({Key? key}) : super(key: key);
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -23,6 +22,8 @@ class _SignInScreenState extends State<SignInScreen> {
     final Color primaryColor = Theme.of(context).primaryColor;
     AutoRouter.of(context);
     final StackRouter router = context.router;
+    final _authenticationRepository =
+        RepositoryProvider.of<AuthenticationRepository>(context);
 
     return Scaffold(
         body: SafeArea(
@@ -66,10 +67,18 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   const SizedBox(height: 30.0),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        // TODO: Firebase login or fire bloc event for firebase login
+                        try {
+                          await _authenticationRepository
+                              .logInWithEmailAndPassword(
+                                  email: emailOrPhoneNumber,
+                                  password: password);
+                          router.push(const MainHomeRoute());
+                        } on LogInWithEmailAndPasswordFailure catch (e) {
+                          // TODO: Show a snackbar
+                        }
                       }
                     },
                     child: const Text("SIGN IN"),
@@ -80,7 +89,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       const Text("Don't have an account?"),
                       TextButton(
                           onPressed: () {
-                            router.push(SignUpRoute(onLoginCallback: (_) {}));
+                            router.push(const SignUpRoute());
                           },
                           child: const Text("SIGN UP"))
                     ],

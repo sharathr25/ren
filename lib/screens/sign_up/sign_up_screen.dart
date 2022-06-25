@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key, required this.onLoginCallback})
-      : super(key: key);
-
-  final Function(bool loggedIn) onLoginCallback;
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();

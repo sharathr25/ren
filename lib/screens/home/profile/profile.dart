@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ren/repos/auth_repository/auth_repository.dart';
+
+import '../../../blocs/app_bloc/app_bloc.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -12,6 +14,23 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    return const Text("Profile");
+    final _authenticationRepository =
+        RepositoryProvider.of<AuthenticationRepository>(context);
+    final _appBloc = BlocProvider.of<AppBloc>(context);
+
+    if (_appBloc.state.user.isNotEmpty) {
+      return Row(
+        children: [
+          Text(_appBloc.state.user.email!),
+          TextButton(
+              onPressed: () {
+                _authenticationRepository.logOut();
+              },
+              child: const Text("log out"))
+        ],
+      );
+    }
+
+    return const SizedBox();
   }
 }

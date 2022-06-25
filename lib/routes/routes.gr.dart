@@ -12,7 +12,6 @@
 
 import 'package:auto_route/auto_route.dart' as _i9;
 import 'package:flutter/material.dart' as _i10;
-import 'package:flutter/src/widgets/framework.dart' as _i12;
 
 import '../screens/home/chat/chat.dart' as _i5;
 import '../screens/home/favourites/favourites.dart' as _i6;
@@ -39,18 +38,12 @@ class AppRouter extends _i9.RootStackRouter {
           routeData: routeData, child: const _i1.HomeScreen());
     },
     SignInRoute.name: (routeData) {
-      final args = routeData.argsAs<SignInRouteArgs>();
       return _i9.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i2.SignInScreen(
-              key: args.key, onLoginCallback: args.onLoginCallback));
+          routeData: routeData, child: const _i2.SignInScreen());
     },
     SignUpRoute.name: (routeData) {
-      final args = routeData.argsAs<SignUpRouteArgs>();
       return _i9.MaterialPageX<dynamic>(
-          routeData: routeData,
-          child: _i3.SignUpScreen(
-              key: args.key, onLoginCallback: args.onLoginCallback));
+          routeData: routeData, child: const _i3.SignUpScreen());
     },
     HomeRoute.name: (routeData) {
       return _i9.MaterialPageX<dynamic>(
@@ -79,7 +72,8 @@ class AppRouter extends _i9.RootStackRouter {
         _i9.RouteConfig(MainHomeRoute.name, path: '/', guards: [
           routeGuard
         ], children: [
-          _i9.RouteConfig(HomeRoute.name, path: '', parent: MainHomeRoute.name),
+          _i9.RouteConfig(HomeRoute.name,
+              path: 'home', parent: MainHomeRoute.name),
           _i9.RouteConfig(ChatRoute.name,
               path: 'chat', parent: MainHomeRoute.name),
           _i9.RouteConfig(FavouritesRoute.name,
@@ -90,7 +84,7 @@ class AppRouter extends _i9.RootStackRouter {
               path: 'new_product', parent: MainHomeRoute.name)
         ]),
         _i9.RouteConfig(SignInRoute.name, path: 'sign-in'),
-        _i9.RouteConfig(SignUpRoute.name, path: 'sign-up')
+        _i9.RouteConfig(SignUpRoute.name, path: '/sign-up')
       ];
 }
 
@@ -105,56 +99,24 @@ class MainHomeRoute extends _i9.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.SignInScreen]
-class SignInRoute extends _i9.PageRouteInfo<SignInRouteArgs> {
-  SignInRoute({_i12.Key? key, required dynamic Function(bool) onLoginCallback})
-      : super(SignInRoute.name,
-            path: 'sign-in',
-            args: SignInRouteArgs(key: key, onLoginCallback: onLoginCallback));
+class SignInRoute extends _i9.PageRouteInfo<void> {
+  const SignInRoute() : super(SignInRoute.name, path: 'sign-in');
 
   static const String name = 'SignInRoute';
 }
 
-class SignInRouteArgs {
-  const SignInRouteArgs({this.key, required this.onLoginCallback});
-
-  final _i12.Key? key;
-
-  final dynamic Function(bool) onLoginCallback;
-
-  @override
-  String toString() {
-    return 'SignInRouteArgs{key: $key, onLoginCallback: $onLoginCallback}';
-  }
-}
-
 /// generated route for
 /// [_i3.SignUpScreen]
-class SignUpRoute extends _i9.PageRouteInfo<SignUpRouteArgs> {
-  SignUpRoute({_i12.Key? key, required dynamic Function(bool) onLoginCallback})
-      : super(SignUpRoute.name,
-            path: 'sign-up',
-            args: SignUpRouteArgs(key: key, onLoginCallback: onLoginCallback));
+class SignUpRoute extends _i9.PageRouteInfo<void> {
+  const SignUpRoute() : super(SignUpRoute.name, path: '/sign-up');
 
   static const String name = 'SignUpRoute';
-}
-
-class SignUpRouteArgs {
-  const SignUpRouteArgs({this.key, required this.onLoginCallback});
-
-  final _i12.Key? key;
-
-  final dynamic Function(bool) onLoginCallback;
-
-  @override
-  String toString() {
-    return 'SignUpRouteArgs{key: $key, onLoginCallback: $onLoginCallback}';
-  }
 }
 
 /// generated route for
 /// [_i4.Home]
 class HomeRoute extends _i9.PageRouteInfo<void> {
-  const HomeRoute() : super(HomeRoute.name, path: '');
+  const HomeRoute() : super(HomeRoute.name, path: 'home');
 
   static const String name = 'HomeRoute';
 }
