@@ -1,10 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ren/auth/auth_service.dart';
+import 'package:ren/firebase_options.dart';
 import 'package:ren/routes/route_guard.dart';
 import 'package:ren/routes/routes.gr.dart';
 
 void main() {
+  Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const App());
 }
 

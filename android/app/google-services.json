@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "986610493805",
+    "project_id": "ren-app-ad9a6",
+    "storage_bucket": "ren-app-ad9a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986610493805:android:e23ab503934455816b9264",
+        "android_client_info": {
+          "package_name": "com.example.ren"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "986610493805-jfn2jrjjqrk95f7j041rkl77he3kuuk3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVQmwrLvRpqwAsms-eN3E6N6gY2L08CqY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "986610493805-jfn2jrjjqrk95f7j041rkl77he3kuuk3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
