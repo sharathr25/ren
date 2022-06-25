@@ -7,6 +7,7 @@ import 'package:ren/screens/home/home/home.dart';
 import 'package:ren/screens/home/new_product/new_product.dart';
 import 'package:ren/screens/home/profile/profile.dart';
 import 'package:ren/screens/sign_in/sign_in_screen.dart';
+import 'package:ren/screens/sign_up/sign_up_screen.dart';
 
 @MaterialAutoRouter(
   routes: <AutoRoute>[
@@ -43,6 +44,11 @@ import 'package:ren/screens/sign_in/sign_in_screen.dart';
       page: SignInScreen,
       name: 'SignInRoute',
       path: 'sign-in',
+    ),
+    AutoRoute(
+      page: SignUpScreen,
+      name: 'SignUpRoute',
+      path: 'sign-up',
     )
   ],
 )

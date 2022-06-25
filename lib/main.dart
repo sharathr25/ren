@@ -36,6 +36,32 @@ class AppState extends State<App> {
             unselectedIconTheme: IconThemeData(color: primaryColor, size: 30),
             elevation: 0,
           ),
+          textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+            primary: primaryColor, // This is a custom color variable
+            textStyle: GoogleFonts.rubik(),
+          )),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(primaryColor),
+                  minimumSize: MaterialStateProperty.all(const Size(50, 50)))),
+          inputDecorationTheme: InputDecorationTheme(
+              floatingLabelStyle: GoogleFonts.rubik(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 0.25,
+                  color: Colors.black),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.black, width: 1.5),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              filled: true,
+              fillColor: const Color(0xF1F2F6ff)),
+          textSelectionTheme:
+              const TextSelectionThemeData(cursorColor: Colors.black),
           appBarTheme: AppBarTheme(backgroundColor: primaryColor, elevation: 0),
           textTheme: TextTheme(
             headline1: GoogleFonts.rubik(
