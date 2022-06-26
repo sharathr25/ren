@@ -6,6 +6,8 @@ RegExp emailRegex = RegExp(
 RegExp phoneRegex = RegExp(r"(^(?:[+0]9)?[0-9]{10,12}$)");
 
 const Color primaryColor = Color(0xff6319b8);
+const double gapBetweenFormElements = 30.0;
+const double loadingIndicatorSize = 20.0;
 
 ThemeData themeData = ThemeData(
     primaryColor: primaryColor,

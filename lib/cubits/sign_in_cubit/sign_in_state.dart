@@ -1,17 +1,18 @@
 part of 'sign_in_cubit.dart';
 
 class SignInState extends Equatable {
-  const SignInState({this.email = '', this.password = ''});
+  const SignInState({this.phoneNumber = '', this.password = ''});
 
-  final String email;
+  final String phoneNumber;
   final String password;
 
   @override
-  List<Object> get props => [email, password];
+  List<Object> get props => [phoneNumber, password];
 
-  SignInState copyWith({String? email, String? password}) {
+  SignInState copyWith({String? phoneNumber, String? password}) {
     return SignInState(
-        email: email ?? this.email, password: password ?? this.password);
+        phoneNumber: phoneNumber ?? this.phoneNumber,
+        password: password ?? this.password);
   }
 }
 

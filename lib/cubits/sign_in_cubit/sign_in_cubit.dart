@@ -9,8 +9,8 @@ class SignInCubit extends Cubit<SignInState> {
 
   final AuthenticationRepository _authenticationRepository;
 
-  void emailSaved(String value) {
-    emit(state.copyWith(email: value));
+  void phoneNumberSaved(String value) {
+    emit(state.copyWith(phoneNumber: value));
   }
 
   void passwordSaved(String value) {
@@ -19,11 +19,11 @@ class SignInCubit extends Cubit<SignInState> {
 
   Future<void> loginWithEmail() async {
     try {
-      String email = state.email;
+      String phoneNumber = state.phoneNumber;
       String password = state.password;
       emit(SignInLoading());
       await _authenticationRepository.logInWithEmailAndPassword(
-        email: email,
+        email: '$phoneNumber@ren.com',
         password: password,
       );
       emit(SignInDone());

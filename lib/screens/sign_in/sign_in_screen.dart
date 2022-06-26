@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ren/components/Heading.dart';
+import 'package:ren/constants/constants.dart';
 import 'package:ren/repos/auth_repository/auth_repository.dart';
 import 'package:ren/routes/routes.gr.dart';
 import 'package:ren/utils/validators.dart';
@@ -24,7 +26,9 @@ class _SignInScreenState extends State<SignInScreen> {
       child: Container(
         margin: const EdgeInsets.all(20.0),
         child: Column(children: [
-          const Heading(),
+          const Heading(
+            text: "Welocome to REN",
+          ),
           BlocProvider(
             create: (context) => SignInCubit(
                 RepositoryProvider.of<AuthenticationRepository>(context)),
@@ -44,29 +48,8 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 }
 
-class Heading extends StatelessWidget {
-  const Heading({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final Color primaryColor = Theme.of(context).primaryColor;
-
-    return Text(
-      'Welcome to REN',
-      style: Theme.of(context)
-          .textTheme
-          .headline2
-          ?.merge(TextStyle(color: primaryColor)),
-    );
-  }
-}
-
 class SignInForm extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final double gapBetweenFormElements = 30.0;
-  final double loadingIndicatorSize = 20.0;
 
   SignInForm({
     Key? key,
@@ -87,30 +70,30 @@ class SignInForm extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: gapBetweenFormElements),
+              const SizedBox(height: gapBetweenFormElements),
               TextFormField(
                 decoration: const InputDecoration(
-                  label: Text("Email or Phone number*"),
+                  label: Text("Phone number"),
                 ),
                 onSaved: (value) {
-                  context.read<SignInCubit>().emailSaved(value!);
+                  context.read<SignInCubit>().phoneNumberSaved(value!);
                 },
-                validator: emailOrPhoneNumberValidator(_formKey),
+                validator: phoneNumberValidator(_formKey),
               ),
-              SizedBox(height: gapBetweenFormElements),
+              const SizedBox(height: gapBetweenFormElements),
               TextFormField(
                 obscureText: true,
                 enableSuggestions: false,
                 autocorrect: false,
                 decoration: const InputDecoration(
-                  label: Text("Password*"),
+                  label: Text("Password"),
                 ),
                 onSaved: (value) {
                   context.read<SignInCubit>().passwordSaved(value!);
                 },
                 validator: passwordValidator(_formKey),
               ),
-              SizedBox(height: gapBetweenFormElements),
+              const SizedBox(height: gapBetweenFormElements),
               ElevatedButton(
                   onPressed: () async {
                     if (state is SignInLoading) return;
@@ -120,10 +103,10 @@ class SignInForm extends StatelessWidget {
                     }
                   },
                   child: state is SignInLoading
-                      ? SizedBox(
+                      ? const SizedBox(
                           width: loadingIndicatorSize,
                           height: loadingIndicatorSize,
-                          child: const CircularProgressIndicator(
+                          child: CircularProgressIndicator(
                             color: Colors.white,
                             strokeWidth: 1,
                           ),
