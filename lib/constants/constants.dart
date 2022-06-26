@@ -31,12 +31,9 @@ ThemeData themeData = ThemeData(
             fontWeight: FontWeight.w400,
             letterSpacing: 0.25,
             color: Colors.black),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black, width: 1.5),
-          borderRadius: BorderRadius.circular(10),
+        border: const OutlineInputBorder(),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(width: 1.5),
         ),
         filled: true,
         fillColor: const Color(0xF1F2F6ff)),
