@@ -3,44 +3,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ren/components/Heading.dart';
 import 'package:ren/constants/constants.dart';
-import 'package:ren/repos/auth_repository/auth_repository.dart';
 import 'package:ren/routes/routes.gr.dart';
-import 'package:ren/utils/validators.dart';
 import 'package:ren/cubits/sign_in_cubit/sign_in_cubit.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+class OtpVerificationScreen extends StatefulWidget {
+  const OtpVerificationScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     AutoRouter.of(context);
     final StackRouter router = context.router;
 
-    return Scaffold(
-        body: SafeArea(
-      child: Container(
-        margin: const EdgeInsets.all(20.0),
-        child: Column(children: [
-          const Heading(
-            text: "Welocome to REN",
+    return SafeArea(
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           ),
-          BlocListener<SignInCubit, SignInState>(
-            listener: ((context, state) => {
-                  if (state is SignInCodeSent)
-                    {router.push(const OtpVerificationRoute())}
-                  else if (state is SignInError)
-                    print(state.errorMessage)
-                }),
-            child: SignInForm(router: router),
-          ),
-        ]),
-      ),
-    ));
+          body: Container(
+            margin: const EdgeInsets.all(20.0),
+            child: Column(children: [
+              const Heading(
+                text: "OTP Verification",
+              ),
+              BlocListener<SignInCubit, SignInState>(
+                listener: ((context, state) => {
+                      if (state is SignInDone)
+                        router.replaceAll([
+                          const MainHomeRoute(),
+                        ])
+                      else if (state is SignInError)
+                        print(state.errorMessage)
+                    }),
+                child: SignInForm(router: router),
+              )
+            ]),
+          )),
+    );
   }
 }
 
@@ -68,13 +71,17 @@ class SignInForm extends StatelessWidget {
             children: [
               const SizedBox(height: gapBetweenFormElements),
               TextFormField(
+                maxLength: 6,
                 decoration: const InputDecoration(
-                  label: Text("Phone number"),
+                  label: Text("OTP"),
                 ),
                 onSaved: (value) {
-                  context.read<SignInCubit>().phoneNumberSaved(value!);
+                  context.read<SignInCubit>().otpSaved(value!);
                 },
-                validator: phoneNumberValidator(_formKey),
+                validator: (value) {
+                  if (value == null || value.isEmpty) return "OTP is required";
+                  _formKey.currentState!.save();
+                },
               ),
               const SizedBox(height: gapBetweenFormElements),
               ElevatedButton(
@@ -82,7 +89,7 @@ class SignInForm extends StatelessWidget {
                     if (state is SignInLoading) return;
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      context.read<SignInCubit>().loginWithPhoneNumber();
+                      context.read<SignInCubit>().verifyOtpCode();
                     }
                   },
                   child: state is SignInLoading
@@ -94,17 +101,19 @@ class SignInForm extends StatelessWidget {
                             strokeWidth: 1,
                           ),
                         )
-                      : const Text("GET OTP")),
+                      : const Text("SIGN IN")),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don't have an account?"),
+                  const Text("Didn't receieved a code?"),
                   TextButton(
                       onPressed: () {
                         if (state is SignInLoading) return;
-                        router.push(const SignUpRoute());
+                        context
+                            .read<SignInCubit>()
+                            .loginWithPhoneNumber(resend: true);
                       },
-                      child: const Text("SIGN UP"))
+                      child: const Text("RESEND"))
                 ],
               )
             ],

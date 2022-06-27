@@ -6,6 +6,7 @@ import 'package:ren/screens/home/favourites/favourites.dart';
 import 'package:ren/screens/home/home/home.dart';
 import 'package:ren/screens/home/new_product/new_product.dart';
 import 'package:ren/screens/home/profile/profile.dart';
+import 'package:ren/screens/otp_verifcation_screen.dart/otp_verification_screen.dart';
 import 'package:ren/screens/sign_in/sign_in_screen.dart';
 import 'package:ren/screens/sign_up/sign_up_screen.dart';
 
@@ -43,7 +44,12 @@ import 'package:ren/screens/sign_up/sign_up_screen.dart';
     AutoRoute(
       page: SignInScreen,
       name: 'SignInRoute',
-      path: 'sign-in',
+      path: '/sign-in',
+    ),
+    AutoRoute(
+      page: OtpVerificationScreen,
+      name: 'OtpVerificationRoute',
+      path: '/otp-verification',
     ),
     AutoRoute(
       page: SignUpScreen,

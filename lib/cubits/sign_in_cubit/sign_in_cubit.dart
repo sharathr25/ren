@@ -13,24 +13,45 @@ class SignInCubit extends Cubit<SignInState> {
     emit(state.copyWith(phoneNumber: value));
   }
 
-  void passwordSaved(String value) {
-    emit(state.copyWith(password: value));
+  void otpSaved(String value) {
+    emit(state.copyWith(otp: value));
   }
 
-  Future<void> loginWithEmail() async {
+  Future<void> loginWithPhoneNumber({bool? resend = false}) async {
     try {
       String phoneNumber = state.phoneNumber;
-      String password = state.password;
-      emit(SignInLoading());
-      await _authenticationRepository.logInWithEmailAndPassword(
-        email: '$phoneNumber@ren.com',
-        password: password,
+      emit(SignInLoading(
+          state.verificationId, state.forceResendingToken, state.phoneNumber));
+      await _authenticationRepository.signInWithPhoneNumber(
+          phoneNumber: '+91$phoneNumber',
+          forceResendingToken:
+              resend != null && resend ? state.forceResendingToken : null,
+          codeSent: (String verificationId, int? forceResendingToken) {
+            emit(SignInCodeSent(
+                verificationId, forceResendingToken, phoneNumber));
+          });
+    } on VerifyPhoneNumberFailure catch (e) {
+      emit(SignInError(e.message));
+    } catch (e) {
+      emit(const SignInError("Sign in failed, Try again"));
+    }
+  }
+
+  Future<void> verifyOtpCode() async {
+    try {
+      String otp = state.otp;
+      String verificationId = state.verificationId;
+      emit(SignInLoading(
+          state.verificationId, state.forceResendingToken, state.phoneNumber));
+      await _authenticationRepository.verifyOtpCode(
+        otp: otp,
+        verificationId: verificationId,
       );
       emit(SignInDone());
-    } on LogInWithEmailAndPasswordFailure catch (e) {
+    } on VerifyOTPFailure catch (e) {
       emit(SignInError(e.message));
-    } catch (_) {
-      emit(const SignInError("Sign in failed, Try again"));
+    } catch (e) {
+      emit(const SignInError("OTP verification failed, Try again"));
     }
   }
 }

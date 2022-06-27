@@ -145,6 +145,40 @@ class LogInWithGoogleFailure implements Exception {
   final String message;
 }
 
+class VerifyOTPFailure implements Exception {
+  final String message;
+
+  VerifyOTPFailure([
+    this.message = 'Something went wrong in OTP verifcation',
+  ]);
+
+  factory VerifyOTPFailure.fromCode(String code) {
+    switch (code) {
+      default:
+        return VerifyOTPFailure();
+    }
+  }
+}
+
+class VerifyPhoneNumberFailure implements Exception {
+  final String message;
+
+  VerifyPhoneNumberFailure([
+    this.message = 'Something went wrong in login',
+  ]);
+
+  factory VerifyPhoneNumberFailure.fromCode(String code) {
+    switch (code) {
+      case 'invalid-phone-number':
+        return VerifyPhoneNumberFailure(
+          "The provided phone number is not valid.",
+        );
+      default:
+        return VerifyPhoneNumberFailure();
+    }
+  }
+}
+
 /// Thrown during the logout process if a failure occurs.
 class LogOutFailure implements Exception {}
 
@@ -207,6 +241,54 @@ class AuthenticationRepository {
       throw SignUpWithEmailAndPasswordFailure.fromCode(e.code);
     } catch (_) {
       throw const SignUpWithEmailAndPasswordFailure();
+    }
+  }
+
+  /// Sign in user with the provided [phoneNumber], [codeAutoRetrievalTimeout], [codeSent], [verificationCompleted], [verificationFailed].
+  // codeAutoRetrievalTimeout: (String verificationId) {},
+  // codeSent: (String verificationId, int? forceResendingToken) {},
+  // verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
+  // verificationFailed: (FirebaseAuthException error) {}
+  /// Throws a [VerifyPhoneNumberFailure] if an exception occurs.
+  Future<void> signInWithPhoneNumber(
+      {required String phoneNumber,
+      codeSent,
+      verificationCompleted,
+      forceResendingToken}) async {
+    try {
+      await _firebaseAuth.verifyPhoneNumber(
+          phoneNumber: phoneNumber,
+          codeAutoRetrievalTimeout: (String verificationId) {},
+          codeSent: codeSent,
+          forceResendingToken: forceResendingToken,
+          verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {
+            _firebaseAuth.signInWithCredential(phoneAuthCredential);
+          },
+          verificationFailed: (FirebaseAuthException e) {
+            throw VerifyPhoneNumberFailure.fromCode(e.code);
+          });
+    } on FirebaseAuthException catch (e) {
+      throw VerifyPhoneNumberFailure.fromCode(e.code);
+    } catch (e) {
+      throw VerifyPhoneNumberFailure();
+    }
+  }
+
+  /// Verify OTP and sign in user with the provided [otp], [verificationId].
+  //
+  /// Throws a [SignUpWithEmailAndPasswordFailure] if an exception occurs.
+  Future<void> verifyOtpCode({
+    required String otp,
+    required String verificationId,
+  }) async {
+    try {
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verificationId, smsCode: otp);
+      await _firebaseAuth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw VerifyOTPFailure.fromCode(e.code);
+    } catch (e) {
+      throw VerifyOTPFailure();
     }
   }
 
@@ -277,6 +359,9 @@ class AuthenticationRepository {
 extension on firebase_auth.User {
   User get toUser {
     return User(
-        fireBaseUserId: uid, email: email, name: displayName, photo: photoURL);
+        fireBaseUserId: uid,
+        phoneNumber: phoneNumber,
+        name: displayName,
+        photo: photoURL);
   }
 }

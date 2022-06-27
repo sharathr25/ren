@@ -21,7 +21,7 @@ class _ProfileState extends State<Profile> {
     if (_appBloc.state.user.isNotEmpty) {
       return Row(
         children: [
-          Text(_appBloc.state.user.email!),
+          Text(_appBloc.state.user.phoneNumber!),
           TextButton(
               onPressed: () {
                 _authenticationRepository.logOut();

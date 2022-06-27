@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:ren/constants/constants.dart';
+import 'package:ren/cubits/sign_in_cubit/sign_in_cubit.dart';
 import 'package:ren/firebase_options.dart';
 import 'package:ren/repos/auth_repository/auth_repository.dart';
 import 'package:ren/routes/route_guard.dart';
@@ -38,10 +39,17 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
       value: _authenticationRepository,
-      child: BlocProvider(
-        create: (_) => AppBloc(
-          authenticationRepository: _authenticationRepository,
-        ),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AppBloc>(
+            create: (BuildContext context) =>
+                AppBloc(authenticationRepository: _authenticationRepository),
+          ),
+          BlocProvider<SignInCubit>(
+            create: (BuildContext context) =>
+                SignInCubit(_authenticationRepository),
+          ),
+        ],
         child: const AppView(),
       ),
     );

@@ -12,10 +12,13 @@ class User extends Equatable {
     this.email,
     this.name,
     this.photo,
+    this.phoneNumber,
   });
 
   /// The current user's email address.
   final String? email;
+
+  final String? phoneNumber;
 
   /// The current user's id.
   final String fireBaseUserId;
