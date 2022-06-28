@@ -14,23 +14,24 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    final _authenticationRepository =
-        RepositoryProvider.of<AuthenticationRepository>(context);
-    final _appBloc = BlocProvider.of<AppBloc>(context);
-
-    if (_appBloc.state.user.isNotEmpty) {
-      return Row(
-        children: [
-          Text(_appBloc.state.user.phoneNumber!),
-          TextButton(
-              onPressed: () {
-                _authenticationRepository.logOut();
-              },
-              child: const Text("log out"))
-        ],
-      );
-    }
-
-    return const SizedBox();
+    return BlocSelector<AppBloc, AppState, dynamic>(
+      selector: (state) {
+        return state;
+      },
+      builder: (context, state) {
+        if (state.user.isEmpty) return const SizedBox();
+        return Row(
+          children: [
+            Text(state.user.phoneNumber!),
+            Text(state.user.name! ?? ''),
+            TextButton(
+                onPressed: () {
+                  context.read<AppBloc>().add(AppLogoutRequested());
+                },
+                child: const Text("log out"))
+          ],
+        );
+      },
+    );
   }
 }

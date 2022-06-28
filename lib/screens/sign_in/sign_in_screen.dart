@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ren/components/Heading.dart';
 import 'package:ren/constants/constants.dart';
-import 'package:ren/repos/auth_repository/auth_repository.dart';
 import 'package:ren/routes/routes.gr.dart';
 import 'package:ren/utils/validators.dart';
 import 'package:ren/cubits/sign_in_cubit/sign_in_cubit.dart';
@@ -25,20 +24,22 @@ class _SignInScreenState extends State<SignInScreen> {
         body: SafeArea(
       child: Container(
         margin: const EdgeInsets.all(20.0),
-        child: Column(children: [
-          const Heading(
-            text: "Welocome to REN",
-          ),
-          BlocListener<SignInCubit, SignInState>(
-            listener: ((context, state) => {
-                  if (state is SignInCodeSent)
-                    {router.push(const OtpVerificationRoute())}
-                  else if (state is SignInError)
-                    print(state.errorMessage)
-                }),
-            child: SignInForm(router: router),
-          ),
-        ]),
+        child: SingleChildScrollView(
+          child: Column(children: [
+            const Heading(
+              text: "Welocome to REN",
+            ),
+            BlocListener<SignInCubit, SignInState>(
+              listener: ((context, state) => {
+                    if (state is SignInCodeSent)
+                      {router.push(const OtpVerificationRoute())}
+                    else if (state is SignInError)
+                      print(state.errorMessage)
+                  }),
+              child: SignInForm(router: router),
+            ),
+          ]),
+        ),
       ),
     ));
   }

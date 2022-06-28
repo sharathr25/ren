@@ -182,6 +182,9 @@ class VerifyPhoneNumberFailure implements Exception {
 /// Thrown during the logout process if a failure occurs.
 class LogOutFailure implements Exception {}
 
+/// Thrown during update display name failure
+class UpdateDisplayNameFailure implements Exception {}
+
 /// {@template authentication_repository}
 /// Repository which manages user authentication.
 /// {@endtemplate}
@@ -222,6 +225,18 @@ class AuthenticationRepository {
     });
   }
 
+  /// Stream of [User] which will emit the current user when
+  /// the authentication state changes.
+  ///
+  /// Emits [User.empty] if the user is not authenticated.
+  Stream<User> profileChanges() {
+    return _firebaseAuth.userChanges().map((firebaseUser) {
+      final user = firebaseUser == null ? User.empty : firebaseUser.toUser;
+      _cache.write(key: userCacheKey, value: user);
+      return user;
+    });
+  }
+
   /// Returns the current cached user.
   /// Defaults to [User.empty] if there is no cached user.
   User get currentUser {
@@ -244,7 +259,7 @@ class AuthenticationRepository {
     }
   }
 
-  /// Sign in user with the provided [phoneNumber], [codeAutoRetrievalTimeout], [codeSent], [verificationCompleted], [verificationFailed].
+  /// Sign in user with the provided [phoneNumber], [codeSent], [verificationCompleted].
   // codeAutoRetrievalTimeout: (String verificationId) {},
   // codeSent: (String verificationId, int? forceResendingToken) {},
   // verificationCompleted: (PhoneAuthCredential phoneAuthCredential) {},
@@ -352,6 +367,18 @@ class AuthenticationRepository {
       ]);
     } catch (_) {
       throw LogOutFailure();
+    }
+  }
+
+  /// Update user display name with provided [firstName] and [lastName]
+  ///
+  /// Throws a update failure exception
+  Future<void> updateUserDisplayName(String firstName, String lastName) async {
+    try {
+      await _firebaseAuth.currentUser
+          ?.updateDisplayName('$firstName $lastName');
+    } catch (_) {
+      throw UpdateDisplayNameFailure();
     }
   }
 }

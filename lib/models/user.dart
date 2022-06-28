@@ -39,5 +39,5 @@ class User extends Equatable {
   bool get isNotEmpty => this != User.empty;
 
   @override
-  List<Object?> get props => [email, fireBaseUserId, name, photo];
+  List<Object?> get props => [email, fireBaseUserId, name, photo, phoneNumber];
 }

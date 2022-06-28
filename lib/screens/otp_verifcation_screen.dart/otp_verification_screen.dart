@@ -26,22 +26,24 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
           ),
           body: Container(
             margin: const EdgeInsets.all(20.0),
-            child: Column(children: [
-              const Heading(
-                text: "OTP Verification",
-              ),
-              BlocListener<SignInCubit, SignInState>(
-                listener: ((context, state) => {
-                      if (state is SignInDone)
-                        router.replaceAll([
-                          const MainHomeRoute(),
-                        ])
-                      else if (state is SignInError)
-                        print(state.errorMessage)
-                    }),
-                child: SignInForm(router: router),
-              )
-            ]),
+            child: SingleChildScrollView(
+              child: Column(children: [
+                const Heading(
+                  text: "OTP Verification",
+                ),
+                BlocListener<SignInCubit, SignInState>(
+                  listener: ((context, state) => {
+                        if (state is SignInDone)
+                          router.replaceAll([
+                            const MainHomeRoute(),
+                          ])
+                        else if (state is SignInError)
+                          print(state.errorMessage)
+                      }),
+                  child: SignInForm(router: router),
+                )
+              ]),
+            ),
           )),
     );
   }

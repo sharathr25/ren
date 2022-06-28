@@ -22,10 +22,14 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     _userSubscription = _authenticationRepository.user.listen(
       (user) => add(AppUserChanged(user)),
     );
+    _userProfleSubscription = _authenticationRepository.profileChanges().listen(
+          (user) => add(AppUserChanged(user)),
+        );
   }
 
   final AuthenticationRepository _authenticationRepository;
   late final StreamSubscription<User> _userSubscription;
+  late final StreamSubscription<User> _userProfleSubscription;
 
   void _onUserChanged(AppUserChanged event, Emitter<AppState> emit) {
     emit(
@@ -42,6 +46,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   @override
   Future<void> close() {
     _userSubscription.cancel();
+    _userProfleSubscription.cancel();
     return super.close();
   }
 }

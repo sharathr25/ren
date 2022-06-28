@@ -21,26 +21,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final StackRouter router = context.router;
 
     return Scaffold(
-        body: SafeArea(
-      child: Container(
-        margin: const EdgeInsets.all(20.0),
-        child: Column(children: [
-          const Heading(
-            text: "Create an account",
+      body: SafeArea(
+        child: Container(
+          margin: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+            child: Column(children: [
+              const Heading(
+                text: "Create an account",
+              ),
+              //both sign up and sign in are same for firebase phone auth so using same cubit ans state
+              BlocListener<SignInCubit, SignInState>(
+                listener: ((context, state) => {
+                      if (state is SignInCodeSent)
+                        {router.push(const OtpVerificationRoute())}
+                      else if (state is SignInError)
+                        print(state.errorMessage)
+                    }),
+                child: SignUpForm(router: router),
+              )
+            ]),
           ),
-          //both sign up and sign in are same for firebase phone auth so using same cubit ans state
-          BlocListener<SignInCubit, SignInState>(
-            listener: ((context, state) => {
-                  if (state is SignInCodeSent)
-                    {router.push(const OtpVerificationRoute())}
-                  else if (state is SignInError)
-                    print(state.errorMessage)
-                }),
-            child: SignUpForm(router: router),
-          )
-        ]),
+        ),
       ),
-    ));
+    );
   }
 }
 
@@ -66,6 +69,27 @@ class SignUpForm extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              const SizedBox(height: gapBetweenFormElements),
+              TextFormField(
+                decoration: const InputDecoration(
+                  label: Text("First name"),
+                ),
+                onSaved: (value) {
+                  context.read<SignInCubit>().firstNameSaved(value!);
+                },
+                validator:
+                    requiredValidator(_formKey, "First name is required"),
+              ),
+              const SizedBox(height: gapBetweenFormElements),
+              TextFormField(
+                decoration: const InputDecoration(
+                  label: Text("Last name"),
+                ),
+                onSaved: (value) {
+                  context.read<SignInCubit>().lastNameSaved(value!);
+                },
+                validator: requiredValidator(_formKey, "Last name is required"),
+              ),
               const SizedBox(height: gapBetweenFormElements),
               TextFormField(
                 decoration: const InputDecoration(

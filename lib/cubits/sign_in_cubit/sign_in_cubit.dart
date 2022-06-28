@@ -17,18 +17,24 @@ class SignInCubit extends Cubit<SignInState> {
     emit(state.copyWith(otp: value));
   }
 
+  void firstNameSaved(String value) {
+    emit(state.copyWith(firstName: value));
+  }
+
+  void lastNameSaved(String value) {
+    emit(state.copyWith(lastName: value));
+  }
+
   Future<void> loginWithPhoneNumber({bool? resend = false}) async {
     try {
       String phoneNumber = state.phoneNumber;
-      emit(SignInLoading(
-          state.verificationId, state.forceResendingToken, state.phoneNumber));
+      emit(SignInLoading(state));
       await _authenticationRepository.signInWithPhoneNumber(
           phoneNumber: '+91$phoneNumber',
           forceResendingToken:
               resend != null && resend ? state.forceResendingToken : null,
           codeSent: (String verificationId, int? forceResendingToken) {
-            emit(SignInCodeSent(
-                verificationId, forceResendingToken, phoneNumber));
+            emit(SignInCodeSent(state, verificationId));
           });
     } on VerifyPhoneNumberFailure catch (e) {
       emit(SignInError(e.message));
@@ -41,15 +47,22 @@ class SignInCubit extends Cubit<SignInState> {
     try {
       String otp = state.otp;
       String verificationId = state.verificationId;
-      emit(SignInLoading(
-          state.verificationId, state.forceResendingToken, state.phoneNumber));
+      String firstName = state.firstName;
+      String lastName = state.lastName;
+      emit(SignInLoading(state));
       await _authenticationRepository.verifyOtpCode(
         otp: otp,
         verificationId: verificationId,
       );
+      if (firstName != '' && lastName != '') {
+        await _authenticationRepository.updateUserDisplayName(
+            firstName, lastName);
+      }
       emit(SignInDone());
     } on VerifyOTPFailure catch (e) {
       emit(SignInError(e.message));
+    } on UpdateDisplayNameFailure catch (_) {
+      emit(const SignInError("Couldn't update display name"));
     } catch (e) {
       emit(const SignInError("OTP verification failed, Try again"));
     }
