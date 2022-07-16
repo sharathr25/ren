@@ -12,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    AutoRouter.of(context);
+    final StackRouter router = context.router;
     return AutoTabsRouter(
       routes: const [
         HomeRoute(),
@@ -36,30 +38,39 @@ class _HomeState extends State<HomeScreen> {
               currentIndex: tabsRouter.activeIndex,
               onTap: (index) {
                 // here we switch between tabs
-                tabsRouter.setActiveIndex(index);
+                if (index == 2) {
+                  router.push(const NewAdRoute());
+                } else {
+                  tabsRouter.setActiveIndex(index);
+                }
               },
               items: const [
                 BottomNavigationBarItem(
+                  backgroundColor: Colors.transparent,
                   activeIcon: Icon(Icons.home),
                   icon: Icon(Icons.home_outlined),
                   label: '',
                 ),
                 BottomNavigationBarItem(
+                  backgroundColor: Colors.transparent,
                   activeIcon: Icon(Icons.chat_bubble),
                   icon: Icon(Icons.chat_bubble_outline),
                   label: '',
                 ),
                 BottomNavigationBarItem(
+                  backgroundColor: Colors.transparent,
                   activeIcon: Icon(Icons.add_circle),
                   icon: Icon(Icons.add_circle_outline),
                   label: '',
                 ),
                 BottomNavigationBarItem(
+                  backgroundColor: Colors.transparent,
                   activeIcon: Icon(Icons.favorite),
                   icon: Icon(Icons.favorite_border),
                   label: '',
                 ),
                 BottomNavigationBarItem(
+                  backgroundColor: Colors.transparent,
                   activeIcon: Icon(Icons.person),
                   icon: Icon(Icons.person_outline),
                   label: '',

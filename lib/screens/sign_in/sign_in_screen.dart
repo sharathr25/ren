@@ -69,6 +69,7 @@ class SignInForm extends StatelessWidget {
             children: [
               const SizedBox(height: gapBetweenFormElements),
               TextFormField(
+                keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
                   label: Text("Phone number"),
                 ),

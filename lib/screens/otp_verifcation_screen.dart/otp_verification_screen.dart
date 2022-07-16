@@ -74,6 +74,8 @@ class SignInForm extends StatelessWidget {
               const SizedBox(height: gapBetweenFormElements),
               TextFormField(
                 maxLength: 6,
+                style: const TextStyle(letterSpacing: 20.0),
+                keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
                   label: Text("OTP"),
                 ),

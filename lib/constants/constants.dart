@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ren/utils/colors.dart';
 
 RegExp emailRegex = RegExp(
     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -10,10 +11,11 @@ const double gapBetweenFormElements = 30.0;
 const double loadingIndicatorSize = 20.0;
 
 ThemeData themeData = ThemeData(
+    primarySwatch: createMaterialColor(primaryColor),
     primaryColor: primaryColor,
-    scaffoldBackgroundColor: const Color(0xfff0e6f8),
+    scaffoldBackgroundColor: Colors.white,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       selectedIconTheme: IconThemeData(color: primaryColor, size: 30),
       unselectedIconTheme: IconThemeData(color: primaryColor, size: 30),
       elevation: 0,
@@ -24,9 +26,23 @@ ThemeData themeData = ThemeData(
       textStyle: GoogleFonts.rubik(),
     )),
     elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(primaryColor),
-            minimumSize: MaterialStateProperty.all(const Size(50, 50)))),
+      style: ButtonStyle(
+        surfaceTintColor: MaterialStateProperty.all(Colors.grey),
+        minimumSize: MaterialStateProperty.all(
+          const Size(50, 50),
+        ),
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: ButtonStyle(
+        side: MaterialStateProperty.all(
+          const BorderSide(width: 2.0, color: primaryColor),
+        ),
+        minimumSize: MaterialStateProperty.all(
+          const Size(50, 50),
+        ),
+      ),
+    ),
     inputDecorationTheme: InputDecorationTheme(
         floatingLabelStyle: GoogleFonts.rubik(
             fontSize: 20,
@@ -40,7 +56,12 @@ ThemeData themeData = ThemeData(
         filled: true,
         fillColor: const Color(0xF1F2F6ff)),
     textSelectionTheme: const TextSelectionThemeData(cursorColor: Colors.black),
-    appBarTheme: const AppBarTheme(backgroundColor: primaryColor, elevation: 0),
+    appBarTheme: const AppBarTheme(
+        titleTextStyle: TextStyle(
+            color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+        backgroundColor: primaryColor,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black)),
     textTheme: TextTheme(
       headline1: GoogleFonts.rubik(
           fontSize: 98, fontWeight: FontWeight.w300, letterSpacing: -1.5),
